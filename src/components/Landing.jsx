@@ -1,13 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Hero3D from './Hero3D.jsx';
 import Tilt from './Tilt.jsx';
 
 const Logo = () => (
   <span className="logo">
-    <svg width="38" height="26" viewBox="0 0 38 26" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true">
-      <path d="M2 7c4-5 7 5 12 0s8-5 12 0 6 3 10 0" /><path d="M2 14c4-5 7 5 12 0s8-5 12 0 6 3 10 0" /><path d="M2 21c4-5 7 5 12 0s8-5 12 0 6 3 10 0" />
-    </svg>
-    <span className="logo-word">briefly.ai</span>
+    <img className="logo-mark" src="/logo.svg" width="40" height="40" alt="" />
+    <span className="logo-word">briefly<b>.ai</b></span>
   </span>
 );
 
@@ -32,6 +30,15 @@ const USES = [
 
 export default function Landing({ onStart }) {
   const stack = useRef(null);
+  const [scrolled, setScrolled] = useState(false);
+
+  // Give the fixed nav a solid backdrop once it leaves the top of the hero.
+  useEffect(() => {
+    const on = () => setScrolled(window.scrollY > 40);
+    window.addEventListener('scroll', on, { passive: true });
+    on();
+    return () => window.removeEventListener('scroll', on);
+  }, []);
 
   // Scroll-driven 3D rotation of the preview stack.
   useEffect(() => {
@@ -55,7 +62,7 @@ export default function Landing({ onStart }) {
 
   return (
     <>
-      <header className="nav">
+      <header className={`nav ${scrolled ? 'nav-solid' : ''}`}>
         <a href="#top" className="nav-logo" onClick={go('top')} aria-label="Briefly.ai home"><Logo /></a>
         <nav aria-label="Primary">
           <a href="#product" onClick={go('product')}>Product</a>
