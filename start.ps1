@@ -4,6 +4,6 @@ if (-not (Test-Path .env)) { Copy-Item .env.example .env; Write-Host "Created .e
 $bifrost = (Select-String -Path .env -Pattern '^BIFROST_ENABLED=true' -Quiet)
 if ($bifrost) {
   try { Invoke-WebRequest http://localhost:8080/health -UseBasicParsing -TimeoutSec 2 | Out-Null; Write-Host "Bifrost already running." }
-  catch { Write-Host "Bifrost not reachable. Start it with: npx -y @maximhq/bifrost  (see Docs/SETUP.md) or set BIFROST_ENABLED=false for direct Anthropic." }
+  catch { Write-Host "Bifrost not reachable. Start it with: npx -y @maximhq/bifrost  (see docs/SETUP.md) or set BIFROST_ENABLED=false for direct Anthropic." }
 }
 npm run dev
